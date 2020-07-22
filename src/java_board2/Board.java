@@ -3,6 +3,8 @@ package java_board2;
 import java.util.ArrayList;
 import java.util.Scanner;
 
+import java_board.Article;
+
 
 public class Board {
 
@@ -15,6 +17,9 @@ public class Board {
 		
 		int id = 1;
 		
+		Article article1 = new Article(1, "테스트제목", "테스트내용", Util.getCurrentDate());
+		
+		articles.add(article1);
 		
 		while(true) {
 			
@@ -31,6 +36,7 @@ public class Board {
 				System.out.println("read : 게시물 조회");
 				System.out.println("update : 게시물 수정");
 				System.out.println("delete : 게시물 삭제");
+				System.out.println("search : 게시물 검색");
 			}
 			if(cmd.equals("add")) {
 				
@@ -88,9 +94,38 @@ public class Board {
 				}
 				
 			}
+			if(cmd.equals("search")) {
+				System.out.println("검색항목을 선택하세요 1. 제목 2. 내용");
+				int serchFlag = Integer.parseInt(sc.nextLine());
+				
+				System.out.print("검색어를 입력하세요 : ");
+				String keyword = sc.nextLine();
+				
+				ArrayList<Article> searchedArticles = new ArrayList<>();
+				
+				if(serchFlag == 1) {
+					for(int i = 0; i < articles.size(); i ++) {
+						if(articles.get(i).title.contains(keyword)) {
+							searchedArticles.add(articles.get(i));
+						}
+					}
+				}
+				if(serchFlag == 2) {
+					for(int i = 0; i < articles.size(); i ++) {
+						if(articles.get(i).body.contains(keyword)) {
+							searchedArticles.add(articles.get(i));
+						}
+					}
+				}
+				
+				print_article(searchedArticles);
+				
+				
+			}
 		}
 
 	}
+	
 	static Article get_article_by_id(int id) {
 		Article article = null;
 		for(int i = 0; i < articles.size(); i++) {
@@ -103,6 +138,12 @@ public class Board {
 			}
 		}
 		return article;
+	}
+	
+	public void print_article(Article article) {
+			System.out.println("===게시물 목록===");
+			System.out.println("제목 : " + article.title);
+			System.out.println("내용 : " + article.body);
 	}
 
 }
@@ -118,5 +159,12 @@ class Article {
 	
 	Article() {
 		
+	}
+	
+	Article(int id, String title, String body, String regDate) {
+		this.id = id;
+		this.title = title;
+		this.body = body;
+		this.regDate = regDate;
 	}
 }
